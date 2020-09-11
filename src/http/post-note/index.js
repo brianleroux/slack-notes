@@ -1,4 +1,7 @@
+let qs = require('querystring')
+
 exports.handler = async function note(req) {
-  console.log(req)
-  return {ok: true}
+  let decoded = Buffer.from(req.body, 'base64').toString()
+  let json = qs.parse(decoded)
+  return "cool, got it " + '```' + JSON.stringify(json) + '```'
 }
