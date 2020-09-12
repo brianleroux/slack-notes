@@ -18,31 +18,28 @@ async function handler(req) {
   }
   else {
     // otherwise show notes
-    let body = await data.get({ table })
+    let notes = await data.get({ table })
+    let buttons = notes.map(button)
     return {
-      body: JSON.stringify({
-	      "blocks": [
-		    {
-			    "type": "section",
-			    "text": {
-				    "type": "mrkdwn",
-				    "text": "This is a section block with a button."
-			    },
-			    "accessory": {
-				    "type": "button",
-				    "text": {
-					    "type": "plain_text",
-					    "text": "Click Me",
-					    "emoji": true
-				    },
-				    "value": "click_me_123"
-			    }
-		    }]
-      })
+      body: JSON.stringify({ "blocks": [buttons] })
     }
-    
-    
-    
-    
+  }
+}
+
+function button(note) {
+  return {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: note.text
+    },
+    accessory: {
+      type: "button",
+      text: {
+        type: "plain_text",
+        text: "x",
+      },
+      value: note.key
+    }
   }
 }
