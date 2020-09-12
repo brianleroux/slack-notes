@@ -19,15 +19,30 @@ async function handler(req) {
   else {
     // otherwise show notes
     let body = await data.get({ table })
-    return { body: '```' + JSON.stringify(body) + '```' }
+    return {
+      body: JSON.stringify({
+	      "blocks": [
+		    {
+			    "type": "section",
+			    "text": {
+				    "type": "mrkdwn",
+				    "text": "This is a section block with a button."
+			    },
+			    "accessory": {
+				    "type": "button",
+				    "text": {
+					    "type": "plain_text",
+					    "text": "Click Me",
+					    "emoji": true
+				    },
+				    "value": "click_me_123"
+			    }
+		    }]
+      })
+    }
+    
+    
+    
+    
   }
 }
-
-/*let qs = require('querystring')
-
-exports.handler = async function note(req) {
-  let decoded = Buffer.from(req.body, 'base64').toString()
-  let json = qs.parse(decoded)
-  return "cool, got it " + '```' + JSON.stringify(json) + '```'
-}
-*/
