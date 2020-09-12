@@ -5,6 +5,7 @@ begin-app
 
 @http
 post /note
+post /note/delete
 
 @tables
 data
