@@ -4,7 +4,17 @@ let data = require('@begin/data')
 exports.handler = arc.http.async(handler)
 
 async function handler(req) {
-  return { body: "cool, cool, got it " + '```' + JSON.stringify(req.body) + '```' }
+  
+  let { text, team_id, user_id } = req.body
+  
+  if (text && req.body.text.length > 0) {
+    let table = `notes-${ team_id }-${ user_id }`
+    await data.set({ table, text })
+    return { body: "cool, got it" }
+  }
+  else {
+    return 'hey you need note text!'
+  }
 }
 
 /*let qs = require('querystring')
