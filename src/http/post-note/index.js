@@ -28,6 +28,23 @@ async function handler(req) {
 
 function button(note) {
   return {
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "This is a section block with a button."
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": "Click Me",
+					"emoji": true
+				},
+				"value": "click_me_123"
+			}
+		}
+  /*
+  return {
     type: "section",
     text: {
       type: "mrkdwn",
@@ -43,4 +60,5 @@ function button(note) {
       value: note.key
     }
   }
+  */
 }
