@@ -38,6 +38,7 @@ function button(note) {
       text: {
         type: "plain_text",
         text: "x",
+        emoji: true
       },
       value: note.key
     }
