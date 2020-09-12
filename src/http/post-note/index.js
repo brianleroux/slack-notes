@@ -5,15 +5,21 @@ exports.handler = arc.http.async(handler)
 
 async function handler(req) {
   
+  // extract useful payload stuff
   let { text, team_id, user_id } = req.body
   
+  // create a table for every unique user
+  let table = `notes-${ team_id }-${ user_id }`
+  
+  // if there is a note write it
   if (text && req.body.text.length > 0) {
-    let table = `notes-${ team_id }-${ user_id }`
     await data.set({ table, text })
     return { body: "cool, got it" }
   }
   else {
-    return 'hey you need note text!'
+    // otherwise show notes
+    let body = await data.get({ table })
+    return { body: '```' + JSON.stringify(body) + '```' }
   }
 }
 
