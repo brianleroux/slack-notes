@@ -1,5 +1,6 @@
 let arc = require('@architect/functions')
 let data = require('@begin/data')
+let render = require('@architect/shared/note')
 
 exports.handler = arc.http.async(handler)
 
@@ -19,28 +20,9 @@ async function handler(req) {
   else {
     // otherwise show notes
     let notes = await data.get({ table })
-    let blocks = notes.map(button)
+    let blocks = notes.map(render)
     return {
       body: JSON.stringify({ blocks })
-    }
-  }
-}
-
-function button(note) {
-  return {
-    type: "section",
-    text: {
-      type: "mrkdwn",
-      text: note.text
-    },
-    accessory: {
-      type: "button",
-      text: {
-        type: "plain_text",
-        text: "x",
-        emoji: true
-      },
-      value: note.key
     }
   }
 }
