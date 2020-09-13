@@ -15,6 +15,11 @@ async function handler (req) {
   // nuke the note
   await data.destroy({table, key})
   
+  // chill half a sec
+  await new Promise(res=> {
+    setTimeout(res, 500)
+  })
+  
   // read the notes back
   let notes = await data.get({ table })
   let blocks = notes.map(render)
