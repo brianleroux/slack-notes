@@ -26,8 +26,8 @@ async function handler (req) {
     url: raw.response_url, 
     headers: {
       'content-type': 'application/json'
-    }, 
-    body: JSON.stringify({ blocks }) 
+    },
+    data: { blocks, replace_original: true }
   })
   
   return {
