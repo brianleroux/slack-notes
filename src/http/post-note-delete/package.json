@@ -1,5 +1,8 @@
 
-{"dependencies": {
-  "@architect/functions": "latest",
-  "@begin/data": "latest"
-}}
+{
+  "dependencies": {
+    "@architect/functions": "latest",
+    "@begin/data": "latest",
+    "tiny-json-http": "latest"
+  }
+}
