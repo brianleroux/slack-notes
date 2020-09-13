@@ -1,4 +1,5 @@
 let arc = require('@architect/functions')
+let tiny = require('tiny-json-http')
 let data = require('@begin/data')
 let render = require('@architect/shared/note')
 
@@ -14,17 +15,22 @@ async function handler (req) {
   
   // nuke the note
   await data.destroy({table, key})
-  
-  // chill half a sec
-  await new Promise(res=> {
-    setTimeout(res, 500)
-  })
-  
+    
   // read the notes back
   let notes = await data.get({ table })
   let blocks = notes.map(render)
   
+  console.log(raw)
+  
+  await tiny.post({ 
+    url: raw.response_url, 
+    headers: {
+      'content-type': 'application/json'
+    }, 
+    body: JSON.stringify({ blocks }) 
+  })
+  
   return {
-    json: { blocks }
+    json: { ok: true }
   }
 }
