@@ -6,6 +6,8 @@ exports.handler = arc.http.async(handler)
 
 async function handler(req) {
   
+  console.log(req)
+  
   // extract useful payload stuff
   let { text, team_id, user_id } = req.body
   
