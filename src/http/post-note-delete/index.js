@@ -22,15 +22,37 @@ async function handler (req) {
   
   console.log(raw)
   
+  /*
   await tiny.post({ 
     url: raw.response_url, 
     headers: {
       'content-type': 'application/json'
     },
     data: { blocks, replace_original: true }
-  })
+  })*/
   
-  return {
-    json: { ok: true }
-  }
+  return { statusCode: 200 }
+}
+
+async function view({ trigger_id, notes }) {
+  let blocks = notes.map(render)
+  let view = JSON.stringify({ 
+    type: 'modal', 
+    title: {
+      type: 'plain_text',
+      text: 'notes listed here'
+    },
+    blocks
+  })
+  let result = await tiny.post({ 
+    url: 'https://slack.com/api/views.open',
+    headers: {
+      'Authorization': `Bearer ${ process.env.SLACK_TOKEN }`
+    },
+    data: {
+      trigger_id,
+      view
+    }
+  })
+  console.log(result)
 }
