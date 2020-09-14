@@ -1,6 +1,7 @@
 let arc = require('@architect/functions')
 let data = require('@begin/data')
 let render = require('@architect/shared/note')
+let tiny = require('tiny-json-http')
 
 exports.handler = arc.http.async(handler)
 
@@ -9,7 +10,7 @@ async function handler(req) {
   console.log(req)
   
   // extract useful payload stuff
-  let { text, team_id, user_id } = req.body
+  let { text, team_id, user_id, trigger_id } = req.body
   
   // create a table for every unique user
   let table = `notes-${ team_id }-${ user_id }`
@@ -17,12 +18,15 @@ async function handler(req) {
   // if there is a note write it
   if (text && req.body.text.length > 0) {
     await data.set({ table, text })
-    return { body: "cool, got it" }
   }
   else {
-    // otherwise show notes
+    // otherwise display the notes in a modal
     let notes = await data.get({ table })
-    let blocks = notes.map(render)
+    await view({ trigger_id, notes })
+    /*
+    // otherwise show notes
+
+    
     blocks.push({
       type: "section",
       text: {
@@ -32,6 +36,28 @@ async function handler(req) {
     })
     return {
       body: JSON.stringify({ blocks })
-    }
+    }*/
   }
+  return { statusCode: 200 }
+}
+
+async function view({ trigger_id, notes }) {
+  let blocks = notes.map(render)
+  let view = JSON.stringify({ 
+    type: 'modal', 
+    title: {
+      type: 'plain_text',
+      text: 'notes listed here'
+    },
+    blocks
+  })
+  let result = await tiny.post({ 
+    url: 'https://slack.com/api/views.open',
+    data: {
+      token: process.env.SLACK_TOKEN,
+      trigger_id,
+      view
+    }
+  })
+  console.log(result)
 }
