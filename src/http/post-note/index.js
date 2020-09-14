@@ -6,8 +6,7 @@ let tiny = require('tiny-json-http')
 exports.handler = arc.http.async(handler)
 
 async function handler(req) {
-  
-  console.log(req)
+  // console.log(req)
   
   // extract useful payload stuff
   let { text, team_id, user_id, trigger_id } = req.body
@@ -20,24 +19,12 @@ async function handler(req) {
     await data.set({ table, text })
   }
   else {
-    // otherwise display the notes in a modal
+    // get any notes
     let notes = await data.get({ table })
+    // and show the modal
     await view({ trigger_id, notes })
-    /*
-    // otherwise show notes
-
-    
-    blocks.push({
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `You have *${ notes.length } notes*.`
-      }
-    })
-    return {
-      body: JSON.stringify({ blocks })
-    }*/
   }
+  
   return { statusCode: 200 }
 }
 
