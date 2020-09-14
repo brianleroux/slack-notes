@@ -10,6 +10,7 @@ async function handler (req) {
   let raw = JSON.parse(req.body.payload)
   let user_id = raw.user.id
   let team_id = raw.user.team_id
+  let view_id = raw.view.id
   let table = `notes-${ team_id }-${ user_id }`
   let key = raw.actions[0].value
   
@@ -18,29 +19,21 @@ async function handler (req) {
     
   // read the notes back
   let notes = await data.get({ table })
-  let blocks = notes.map(render)
   
-  console.log(raw)
+  // update the view
+  await view({ view_id, notes })
   
-  /*
-  await tiny.post({ 
-    url: raw.response_url, 
-    headers: {
-      'content-type': 'application/json'
-    },
-    data: { blocks, replace_original: true }
-  })*/
-  
+  // clean exit
   return { statusCode: 200 }
 }
 
-async function view({ trigger_id, notes }) {
+async function view({ view_id, notes }) {
   let blocks = notes.map(render)
   let view = JSON.stringify({ 
     type: 'modal', 
     title: {
       type: 'plain_text',
-      text: 'notes listed here'
+      text: 'notes listed here!'
     },
     blocks
   })
@@ -50,7 +43,7 @@ async function view({ trigger_id, notes }) {
       'Authorization': `Bearer ${ process.env.SLACK_TOKEN }`
     },
     data: {
-      trigger_id,
+      view_id,
       view
     }
   })
