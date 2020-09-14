@@ -27,7 +27,7 @@ async function handler(req) {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "Your notes!"
+        text: `You have *${ notes.length } notes*.`
       }
     })
     return {
