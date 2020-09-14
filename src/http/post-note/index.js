@@ -53,8 +53,10 @@ async function view({ trigger_id, notes }) {
   })
   let result = await tiny.post({ 
     url: 'https://slack.com/api/views.open',
+    headers: {
+      'Authorization': `Bearer ${ process.env.SLACK_TOKEN }`
+    },
     data: {
-      token: process.env.SLACK_TOKEN,
       trigger_id,
       view
     }
