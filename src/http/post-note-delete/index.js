@@ -28,17 +28,16 @@ async function handler (req) {
 }
 
 async function view({ view_id, notes }) {
-  let blocks = notes.map(render)
   let view = JSON.stringify({ 
     type: 'modal', 
     title: {
       type: 'plain_text',
       text: 'notes listed here!'
     },
-    blocks
+    blocks: notes.map(render)
   })
   let result = await tiny.post({ 
-    url: 'https://slack.com/api/views.open',
+    url: 'https://slack.com/api/views.update',
     headers: {
       'Authorization': `Bearer ${ process.env.SLACK_TOKEN }`
     },
