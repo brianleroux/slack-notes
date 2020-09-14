@@ -5,6 +5,7 @@
   - add `https://[YOUR APP]-staging.begin.app/note/delete` request url
 3. create a slash command
   - add `https://YOUR APP]-staging.begin.app/note`
+4. add `SLACK_TOKEN` env var
   
 ## setup production
 
