@@ -23,6 +23,13 @@ async function handler(req) {
     // otherwise show notes
     let notes = await data.get({ table })
     let blocks = notes.map(render)
+    blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "Your notes!"
+      }
+    })
     return {
       body: JSON.stringify({ blocks })
     }
