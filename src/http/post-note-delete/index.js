@@ -47,5 +47,5 @@ async function view({ view_id, notes }) {
       view
     }
   })
-  console.log(result)
+  console.log(JSON.stringify(result, null, 2))
 }
